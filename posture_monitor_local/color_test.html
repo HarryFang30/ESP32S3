@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>RGB565 颜色测试对比</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f0f0f0;
+        }
+        .comparison {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .image-container {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+        }
+        .image-container h3 {
+            margin: 10px 0;
+            color: #333;
+        }
+        .original {
+            border: 3px solid #ff6b6b;
+        }
+        .best {
+            border: 3px solid #51cf66;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎨 RGB565 颜色修正测试</h1>
+    <p>比较不同转换方式的效果，找出颜色最正确的版本：</p>
+    
+    <div class="comparison">
+        <div class="image-container original">
+            <h3>原始转换 (有问题)</h3>
+            <img src="uploads/20250725_232738_converted.jpg" alt="Original">
+            <p>RGB顺序，颜色不正确</p>
+        </div>
+        
+        <div class="image-container">
+            <h3>BGR修正版本</h3>
+            <img src="uploads/20250725_232738_bgr_fixed.jpg" alt="BGR Fixed">
+            <p>BGR颜色顺序修正</p>
+        </div>
+        
+        <div class="image-container">
+            <h3>v1: 小端序 RGB</h3>
+            <img src="uploads/20250725_232738_v1_little_rgb.jpg" alt="v1">
+            <p>Little endian + RGB</p>
+        </div>
+        
+        <div class="image-container">
+            <h3>v2: 大端序 RGB</h3>
+            <img src="uploads/20250725_232738_v2_big_rgb.jpg" alt="v2">
+            <p>Big endian + RGB</p>
+        </div>
+        
+        <div class="image-container best">
+            <h3>v3: 小端序 BGR</h3>
+            <img src="uploads/20250725_232738_v3_little_bgr.jpg" alt="v3">
+            <p>Little endian + BGR (推荐)</p>
+        </div>
+        
+        <div class="image-container">
+            <h3>v4: 大端序 BGR</h3>
+            <img src="uploads/20250725_232738_v4_big_bgr.jpg" alt="v4">
+            <p>Big endian + BGR</p>
+        </div>
+    </div>
+    
+    <div style="margin-top: 30px; padding: 20px; background: white; border-radius: 8px;">
+        <h2>🔍 如何判断正确的版本：</h2>
+        <ul>
+            <li><strong>肤色</strong>：应该是自然的粉红色/黄色调，不是蓝色或绿色</li>
+            <li><strong>背景</strong>：白色区域应该是真正的白色</li>
+            <li><strong>整体色调</strong>：图像不应该有明显的颜色偏移</li>
+            <li><strong>对比度</strong>：图像应该有正常的明暗对比</li>
+        </ul>
+        <p><strong>推荐：</strong>通常ESP32相机使用小端序 + BGR格式 (v3版本)</p>
+    </div>
+    
+    <script>
+        // 点击图像可以放大查看
+        document.querySelectorAll('img').forEach(img => {
+            img.style.cursor = 'pointer';
+            img.onclick = function() {
+                window.open(this.src, '_blank');
+            };
+        });
+    </script>
+</body>
+</html>
